@@ -1,0 +1,48 @@
+services:
+  # ────────────────────────────────────────────
+  # Backend — Express + Prisma
+  # ────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: stocksense-backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env        # your real credentials — gitignored, never committed
+    environment:
+      NODE_ENV: production
+    ports:
+      - "5000:5000"
+    networks:
+      - stocksense-net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  # ────────────────────────────────────────────
+  # Frontend — Vite build served by Nginx
+  # ────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # Baked into the Vite bundle at build time
+        VITE_API_URL: http://localhost:5000/api
+    container_name: stocksense-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - stocksense-net
+
+networks:
+  stocksense-net:
+    driver: bridge
