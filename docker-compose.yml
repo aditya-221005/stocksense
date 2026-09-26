@@ -38,7 +38,6 @@ services:
         required: false
     environment:
       NODE_ENV: production
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/stocksense?schema=public
     ports:
       - "5000:5000"
     depends_on:
