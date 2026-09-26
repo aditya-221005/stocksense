@@ -67,7 +67,7 @@ export const ProductDetailPage: React.FC = () => {
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-1">
-              Category: <span className="text-slate-200">{product.category?.name || 'None'}</span> • Unit of Measure: <span className="text-slate-200">{product.uom?.name} ({product.uom?.symbol})</span>
+              Category: <span className="text-slate-200">{typeof product.category === 'object' && product.category !== null ? product.category.name : (product.category || 'None')}</span> • Unit of Measure: <span className="text-slate-200">{product.uom?.name} ({product.uom?.symbol})</span>
             </p>
           </div>
         </div>

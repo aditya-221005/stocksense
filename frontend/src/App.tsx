@@ -38,6 +38,7 @@ export const App: React.FC = () => {
           <Route element={<MainLayout />}>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/products" element={<ProductsPage />} />
+            <Route path="/inventory" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductDetailPage />} />
             <Route path="/stock" element={<StockBalancesPage />} />
             <Route path="/warehouses" element={<WarehousesPage />} />
@@ -46,6 +47,7 @@ export const App: React.FC = () => {
             <Route path="/transfers" element={<TransfersPage />} />
             <Route path="/adjustments" element={<AdjustmentsPage />} />
             <Route path="/ledger" element={<LedgerPage />} />
+            <Route path="/movements" element={<LedgerPage />} />
             <Route path="/reorder-rules" element={<ReorderRulesPage />} />
             <Route path="/suppliers" element={<SuppliersPage />} />
             <Route path="/customers" element={<CustomersPage />} />
@@ -57,3 +59,5 @@ export const App: React.FC = () => {
     </BrowserRouter>
   );
 };
+
+export default App;

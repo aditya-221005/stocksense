@@ -1,118 +1,190 @@
-import React, { useEffect, useState } from 'react';
-import { InventoryService } from '../services/inventory.service';
-import { StockLedger } from '../types';
-import { History, Filter, ArrowDownRight, ArrowUpRight, Repeat, SlidersHorizontal } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { ArrowDownLeft, ArrowUpRight, Search } from "lucide-react";
+import { InventoryService } from "../services/inventory.service";
+import { StockLedger, StockMovement } from "../types";
+import { stockMovements as mockMovements } from "../data/mockData";
 
 export const LedgerPage: React.FC = () => {
-  const [ledger, setLedger] = useState<StockLedger[]>([]);
+  const [ledgerEntries, setLedgerEntries] = useState<StockLedger[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedType, setSelectedType] = useState('');
-
-  const loadData = async () => {
-    try {
-      setLoading(true);
-      const data = await InventoryService.getStockLedger({ type: selectedType || undefined });
-      setLedger(data);
-    } catch (err) {
-      console.error('Failed to load stock ledger:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [search, setSearch] = useState("");
+  const [typeFilter, setTypeFilter] = useState("All");
 
   useEffect(() => {
-    loadData();
-  }, [selectedType]);
+    const fetchLedger = async () => {
+      try {
+        setLoading(true);
+        const data = await InventoryService.getStockLedger();
+        setLedgerEntries(data);
+      } catch {
+        // Fallback to mock data
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchLedger();
+  }, []);
+
+  const formattedMovements: StockMovement[] = ledgerEntries.length > 0
+    ? ledgerEntries.map((entry) => {
+        const isStockIn = entry.type === "RECEIPT" || entry.type === "TRANSFER_IN";
+        return {
+          id: entry.id,
+          productName: entry.product?.name || "Inventory Product",
+          type: isStockIn ? "Stock In" : "Stock Out",
+          quantity: Math.abs(entry.quantity),
+          date: new Date(entry.createdAt).toLocaleDateString("en-IN", {
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        };
+      })
+    : mockMovements;
+
+  const filteredMovements = formattedMovements.filter((movement) => {
+    const matchesSearch = movement.productName
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    const matchesType =
+      typeFilter === "All" || movement.type === typeFilter;
+
+    return matchesSearch && matchesType;
+  });
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Stock Movement Ledger</h1>
-          <p className="text-xs text-slate-400 mt-1">Immutable audit log of all stock increases, deductions, transfers, and count adjustments.</p>
-        </div>
+    <div className="p-2 sm:p-6 space-y-6">
+      <div className="mb-6">
+        <h2 className="text-3xl font-bold text-slate-900">
+          Stock Movements
+        </h2>
+        <p className="mt-1 text-slate-500">
+          Track inventory coming in, going out, and internal location transfers.
+        </p>
       </div>
 
-      {/* Filter */}
-      <div className="glass-card p-4 rounded-xl border border-slate-800 flex items-center gap-3">
-        <Filter className="w-4 h-4 text-slate-400" />
+      {/* Filters */}
+      <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row">
+        <div className="relative flex-1">
+          <Search
+            size={18}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+          />
+          <input
+            type="text"
+            placeholder="Search product..."
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            className="w-full rounded-lg border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-500 focus:bg-white transition"
+          />
+        </div>
+
         <select
-          value={selectedType}
-          onChange={(e) => setSelectedType(e.target.value)}
-          className="bg-slate-900 border border-slate-700/80 rounded-lg text-xs text-slate-200 px-3 py-2 focus:outline-none focus:border-indigo-500"
+          value={typeFilter}
+          onChange={(event) => setTypeFilter(event.target.value)}
+          className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:bg-white transition"
         >
-          <option value="">All Movement Types</option>
-          <option value="RECEIPT">Receipt (Stock In)</option>
-          <option value="DELIVERY">Delivery (Stock Out)</option>
-          <option value="TRANSFER_IN">Transfer In</option>
-          <option value="TRANSFER_OUT">Transfer Out</option>
-          <option value="ADJUSTMENT">Stock Adjustment</option>
+          <option value="All">All Movements</option>
+          <option value="Stock In">Stock In</option>
+          <option value="Stock Out">Stock Out</option>
         </select>
       </div>
 
-      {/* Ledger Table */}
-      <div className="glass-card rounded-xl border border-slate-800 overflow-hidden">
-        {loading ? (
-          <div className="p-12 text-center text-slate-400 text-xs">
-            <div className="w-6 h-6 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-            Loading stock ledger...
-          </div>
-        ) : ledger.length === 0 ? (
-          <div className="p-12 text-center text-slate-500 text-xs">No stock ledger entries recorded.</div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-900/90 text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-800">
-                <tr>
-                  <th className="py-3.5 px-4 font-semibold">Date & Time</th>
-                  <th className="py-3.5 px-4 font-semibold">Type</th>
-                  <th className="py-3.5 px-4 font-semibold">Product Name</th>
-                  <th className="py-3.5 px-4 font-semibold">Location</th>
-                  <th className="py-3.5 px-4 font-semibold text-right">Qty Movement</th>
-                  <th className="py-3.5 px-4 font-semibold text-right">Balance Before</th>
-                  <th className="py-3.5 px-4 font-semibold text-right">Balance After</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800/60">
-                {ledger.map((entry) => {
-                  const qty = Number(entry.quantity);
-                  const isPositive = qty > 0;
+      {/* Movement Table */}
+      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[700px]">
+            <thead className="border-b border-slate-200 bg-slate-50">
+              <tr>
+                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  Product
+                </th>
+                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  Type
+                </th>
+                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  Quantity
+                </th>
+                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  Date
+                </th>
+              </tr>
+            </thead>
 
-                  return (
-                    <tr key={entry.id} className="hover:bg-slate-800/40 transition">
-                      <td className="py-3.5 px-4 font-mono text-slate-400">
-                        {new Date(entry.createdAt).toLocaleString()}
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
-                            entry.type === 'RECEIPT' || entry.type === 'TRANSFER_IN'
-                              ? 'bg-emerald-950/80 text-emerald-400 border-emerald-800/50'
-                              : entry.type === 'DELIVERY' || entry.type === 'TRANSFER_OUT'
-                              ? 'bg-amber-950/80 text-amber-400 border-amber-800/50'
-                              : 'bg-indigo-950/80 text-indigo-400 border-indigo-800/50'
-                          }`}
-                        >
-                          {entry.type}
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4 font-medium text-white">{entry.product?.name}</td>
-                      <td className="py-3.5 px-4 font-mono text-indigo-300">
-                        {entry.location?.warehouse?.shortCode} / {entry.location?.name}
-                      </td>
-                      <td className={`py-3.5 px-4 text-right font-bold ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
-                        {isPositive ? `+${qty}` : qty} {entry.product?.uom?.symbol}
-                      </td>
-                      <td className="py-3.5 px-4 text-right text-slate-400">{Number(entry.balanceBefore)}</td>
-                      <td className="py-3.5 px-4 text-right font-bold text-slate-200">{Number(entry.balanceAfter)}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
+            <tbody className="divide-y divide-slate-100">
+              {filteredMovements.map((movement) => (
+                <tr key={movement.id} className="hover:bg-slate-50 transition">
+                  <td className="px-5 py-4">
+                    <p className="font-semibold text-slate-800">
+                      {movement.productName}
+                    </p>
+                  </td>
+
+                  <td className="px-5 py-4">
+                    <div className="flex items-center gap-2">
+                      <div
+                        className={`flex h-8 w-8 items-center justify-center rounded-full ${
+                          movement.type === "Stock In"
+                            ? "bg-green-50 text-green-600 border border-green-200"
+                            : "bg-red-50 text-red-600 border border-red-200"
+                        }`}
+                      >
+                        {movement.type === "Stock In" ? (
+                          <ArrowDownLeft size={16} />
+                        ) : (
+                          <ArrowUpRight size={16} />
+                        )}
+                      </div>
+
+                      <span
+                        className={`text-sm font-semibold ${
+                          movement.type === "Stock In"
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }`}
+                      >
+                        {movement.type}
+                      </span>
+                    </div>
+                  </td>
+
+                  <td className="px-5 py-4">
+                    <span
+                      className={`text-sm font-bold ${
+                        movement.type === "Stock In"
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {movement.type === "Stock In" ? "+" : "-"}
+                      {movement.quantity}
+                    </span>
+                  </td>
+
+                  <td className="px-5 py-4 text-sm text-slate-600">
+                    {movement.date}
+                  </td>
+                </tr>
+              ))}
+
+              {filteredMovements.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={4}
+                    className="px-5 py-10 text-center text-sm text-slate-500"
+                  >
+                    {loading ? "Loading stock movements..." : "No movements found."}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
 };
+
+export default LedgerPage;
