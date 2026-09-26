@@ -59,13 +59,13 @@ export const DashboardPage: React.FC = () => {
   });
 
   return (
-    <div className="p-2 sm:p-6 space-y-6">
-      <div className="mb-6">
-        <h2 className="text-3xl font-bold text-slate-900">
-          Dashboard
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-3xl font-extrabold text-white tracking-tight">
+          Executive Dashboard
         </h2>
-        <p className="mt-1 text-slate-500">
-          Here's what's happening with your inventory today.
+        <p className="mt-1 text-sm text-slate-400 font-medium">
+          Real-time visibility into multi-warehouse inventory valuation, stock counts, and movements.
         </p>
       </div>
 
@@ -74,32 +74,36 @@ export const DashboardPage: React.FC = () => {
           title="Total Products"
           value={totalProducts.toString()}
           icon={<Package size={22} />}
-          description="Products in inventory"
+          description="Active products in catalog"
+          color="indigo"
         />
 
         <StatCard
           title="Total Stock"
           value={totalStock.toLocaleString()}
           icon={<Boxes size={22} />}
-          description="Units currently available"
+          description="Units across all locations"
+          color="sky"
         />
 
         <StatCard
           title="Low Stock"
           value={lowStockCount.toString()}
           icon={<AlertTriangle size={22} />}
-          description="Products need attention"
+          description="Items requiring reorder"
+          color="amber"
         />
 
         <StatCard
           title="Inventory Value"
           value={`₹${totalStockValue.toLocaleString("en-IN")}`}
           icon={<IndianRupee size={22} />}
-          description="Total inventory value"
+          description="Combined stock asset value"
+          color="emerald"
         />
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6 lg:grid-cols-2">
         <RecentMovements movements={recentMovements} />
         <LowStock items={lowStockItems} />
       </div>

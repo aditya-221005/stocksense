@@ -103,20 +103,20 @@ export const ProductsPage: React.FC = () => {
   });
 
   return (
-    <div className="p-2 sm:p-6 space-y-6">
+    <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-slate-900">
+          <h2 className="text-3xl font-extrabold text-white tracking-tight">
             Inventory & Products
           </h2>
-          <p className="mt-1 text-slate-500">
-            Manage your product catalog, categories, and stock levels.
+          <p className="mt-1 text-sm text-slate-400 font-medium">
+            Manage product master catalog, SKUs, categories, and stock availability.
           </p>
         </div>
 
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition shadow-sm"
+          className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 hover:from-indigo-500 hover:to-cyan-500 transition-all duration-200"
         >
           <Plus size={18} />
           <span>Add Product</span>
@@ -124,25 +124,25 @@ export const ProductsPage: React.FC = () => {
       </div>
 
       {/* Search & Filter Controls */}
-      <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row">
+      <div className="glass-card rounded-2xl border border-slate-800/80 bg-slate-900/70 p-4 shadow-xl flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
           <Search
             size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
           />
           <input
             type="text"
-            placeholder="Search by product name or SKU..."
+            placeholder="Search product name or SKU code..."
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            className="w-full rounded-lg border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-500 focus:bg-white transition"
+            className="w-full rounded-xl border border-slate-800 bg-slate-900/80 py-2.5 pl-10 pr-4 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 transition-all duration-200"
           />
         </div>
 
         <select
           value={statusFilter}
           onChange={(event) => setStatusFilter(event.target.value)}
-          className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:bg-white transition"
+          className="rounded-xl border border-slate-800 bg-slate-900/80 px-4 py-2.5 text-sm text-slate-200 outline-none focus:border-indigo-500 transition-all duration-200"
         >
           <option value="All">All Status</option>
           <option value="In Stock">In Stock</option>
@@ -152,33 +152,33 @@ export const ProductsPage: React.FC = () => {
       </div>
 
       {/* Product Table */}
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+      <div className="glass-card overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900/70 shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[800px]">
-            <thead className="border-b border-slate-200 bg-slate-50">
+            <thead className="border-b border-slate-800/80 bg-slate-950/80">
               <tr>
-                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Product
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  Product Details
                 </th>
-                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">
                   Category
                 </th>
-                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Supplier / Vendor
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  Supplier
                 </th>
-                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Quantity
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  Total Quantity
                 </th>
-                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Price / Cost
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  Unit Cost
                 </th>
-                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">
                   Status
                 </th>
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-800/50">
               {filteredProducts.map((product) => {
                 const totalQty = product.quantity !== undefined
                   ? product.quantity
@@ -198,43 +198,43 @@ export const ProductsPage: React.FC = () => {
                 );
 
                 return (
-                  <tr key={product.id} className="hover:bg-slate-50 transition">
-                    <td className="px-5 py-4">
+                  <tr key={product.id} className="hover:bg-slate-800/40 transition-colors duration-150">
+                    <td className="px-6 py-4">
                       <div>
-                        <p className="font-semibold text-slate-800">{product.name}</p>
-                        <p className="text-xs font-mono text-slate-400">{product.sku}</p>
+                        <p className="font-semibold text-slate-100">{product.name}</p>
+                        <p className="text-xs font-mono text-cyan-400 mt-0.5">{product.sku}</p>
                       </div>
                     </td>
 
-                    <td className="px-5 py-4 text-sm text-slate-600">
+                    <td className="px-6 py-4 text-sm text-slate-300">
                       {categoryName}
                     </td>
 
-                    <td className="px-5 py-4 text-sm text-slate-600">
+                    <td className="px-6 py-4 text-sm text-slate-300">
                       {supplierName}
                     </td>
 
-                    <td className="px-5 py-4">
-                      <p className="text-sm font-semibold text-slate-800">
-                        {totalQty} {product.uom?.symbol || ''}
+                    <td className="px-6 py-4">
+                      <p className="text-sm font-bold text-slate-100">
+                        {totalQty} {product.uom?.symbol || 'pcs'}
                       </p>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-[11px] text-slate-500 font-medium">
                         Min: {product.minStock || 10}
                       </p>
                     </td>
 
-                    <td className="px-5 py-4 text-sm font-semibold text-slate-700">
+                    <td className="px-6 py-4 text-sm font-bold text-emerald-400">
                       ₹{priceVal.toLocaleString("en-IN")}
                     </td>
 
-                    <td className="px-5 py-4">
+                    <td className="px-6 py-4">
                       <span
-                        className={`rounded-full px-3 py-1 text-xs font-semibold inline-block ${
+                        className={`rounded-full px-3 py-1 text-xs font-bold inline-block border ${
                           statusStr === "In Stock"
-                            ? "bg-green-50 text-green-700 border border-green-200"
+                            ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
                             : statusStr === "Low Stock"
-                            ? "bg-orange-50 text-orange-700 border border-orange-200"
-                            : "bg-red-50 text-red-700 border border-red-200"
+                            ? "bg-amber-500/10 text-amber-400 border-amber-500/30"
+                            : "bg-rose-500/10 text-rose-400 border-rose-500/30"
                         }`}
                       >
                         {statusStr}
@@ -248,7 +248,7 @@ export const ProductsPage: React.FC = () => {
                 <tr>
                   <td
                     colSpan={6}
-                    className="px-5 py-10 text-center text-sm text-slate-500"
+                    className="px-6 py-12 text-center text-sm text-slate-500"
                   >
                     {loading ? "Loading products..." : "No products found."}
                   </td>
@@ -261,56 +261,56 @@ export const ProductsPage: React.FC = () => {
 
       {/* Add Product Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-              <h3 className="text-lg font-bold text-slate-900">Add New Product</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+          <div className="w-full max-w-md rounded-3xl bg-slate-900 border border-slate-800 p-6 shadow-2xl text-slate-100">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <h3 className="text-lg font-bold text-white">Add New Product</h3>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+                className="rounded-xl p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
               >
                 <X size={20} />
               </button>
             </div>
 
             {modalError && (
-              <div className="mt-4 rounded-lg bg-red-50 p-3 text-xs text-red-600 border border-red-200">
+              <div className="mt-4 rounded-xl bg-rose-500/10 p-3 text-xs text-rose-400 border border-rose-500/30 font-medium">
                 {modalError}
               </div>
             )}
 
             <form onSubmit={handleCreateProduct} className="mt-4 space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase">Product Name</label>
+                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Product Name</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Wireless Mouse"
+                  placeholder="e.g. Wireless Ergonomic Mouse"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="mt-1 w-full rounded-lg border border-slate-200 p-2.5 text-sm outline-none focus:border-blue-500"
+                  className="mt-1.5 w-full rounded-xl border border-slate-800 bg-slate-950/90 p-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-indigo-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase">SKU</label>
+                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">SKU Code</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. WM-001"
+                  placeholder="e.g. PROD-MOUSE-02"
                   value={formData.sku}
                   onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
-                  className="mt-1 w-full rounded-lg border border-slate-200 p-2.5 text-sm outline-none focus:border-blue-500"
+                  className="mt-1.5 w-full rounded-xl border border-slate-800 bg-slate-950/90 p-2.5 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-indigo-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase">Category</label>
+                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Category</label>
                   <select
                     value={formData.categoryId}
                     onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
-                    className="mt-1 w-full rounded-lg border border-slate-200 p-2.5 text-sm outline-none focus:border-blue-500"
+                    className="mt-1.5 w-full rounded-xl border border-slate-800 bg-slate-950/90 p-2.5 text-sm text-slate-100 outline-none focus:border-indigo-500"
                   >
                     <option value="">Select Category</option>
                     {categories.map((c) => (
@@ -320,41 +320,41 @@ export const ProductsPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase">Unit Cost (₹)</label>
+                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Unit Cost (₹)</label>
                   <input
                     type="number"
                     min="0"
                     step="0.01"
                     value={formData.unitCost}
                     onChange={(e) => setFormData({ ...formData, unitCost: Number(e.target.value) })}
-                    className="mt-1 w-full rounded-lg border border-slate-200 p-2.5 text-sm outline-none focus:border-blue-500"
+                    className="mt-1.5 w-full rounded-xl border border-slate-800 bg-slate-950/90 p-2.5 text-sm text-slate-100 outline-none focus:border-indigo-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase">Initial Stock Quantity</label>
+                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Initial Stock Quantity</label>
                 <input
                   type="number"
                   min="0"
                   value={formData.initialStock}
                   onChange={(e) => setFormData({ ...formData, initialStock: Number(e.target.value) })}
-                  className="mt-1 w-full rounded-lg border border-slate-200 p-2.5 text-sm outline-none focus:border-blue-500"
+                  className="mt-1.5 w-full rounded-xl border border-slate-800 bg-slate-950/90 p-2.5 text-sm text-slate-100 outline-none focus:border-indigo-500"
                 />
               </div>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+              <div className="flex justify-end gap-3 pt-4 border-t border-slate-800">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50"
+                  className="rounded-xl border border-slate-800 px-4 py-2 text-sm font-semibold text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
+                  className="rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 hover:from-indigo-500 hover:to-cyan-500 disabled:opacity-50 transition-all duration-200"
                 >
                   {submitting ? "Saving..." : "Create Product"}
                 </button>

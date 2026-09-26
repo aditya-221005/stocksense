@@ -11,33 +11,33 @@ export const RecentMovements: React.FC<RecentMovementsProps> = ({ movements }) =
   const displayMovements = movements && movements.length > 0 ? movements : stockMovements;
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="glass-card rounded-2xl p-6 border border-slate-800/80 bg-slate-900/70">
       <div className="mb-5 flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-slate-900">
+          <h3 className="text-lg font-bold text-slate-100">
             Recent Movements
           </h3>
-          <p className="text-sm text-slate-500">
+          <p className="text-xs text-slate-400 mt-0.5">
             Latest inventory receipts and stock transfers
           </p>
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3.5">
         {displayMovements.map((movement) => {
           const isStockIn = movement.type.toLowerCase().includes("in") || movement.type === "RECEIPT";
 
           return (
             <div
               key={movement.id}
-              className="flex items-center justify-between border-b border-slate-100 pb-4 last:border-0 last:pb-0"
+              className="flex items-center justify-between border-b border-slate-800/50 pb-3.5 last:border-0 last:pb-0 hover:bg-slate-800/30 p-2 rounded-xl transition-colors duration-150"
             >
               <div className="flex items-center gap-3">
                 <div
-                  className={`flex h-9 w-9 items-center justify-center rounded-full ${
+                  className={`flex h-9 w-9 items-center justify-center rounded-xl border ${
                     isStockIn
-                      ? "bg-green-50 text-green-600"
-                      : "bg-red-50 text-red-600"
+                      ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                      : "bg-rose-500/10 text-rose-400 border-rose-500/30"
                   }`}
                 >
                   {isStockIn ? (
@@ -48,10 +48,10 @@ export const RecentMovements: React.FC<RecentMovementsProps> = ({ movements }) =
                 </div>
 
                 <div>
-                  <p className="text-sm font-medium text-slate-800">
+                  <p className="text-sm font-semibold text-slate-200">
                     {movement.productName}
                   </p>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-500 font-medium">
                     {movement.date}
                   </p>
                 </div>
@@ -59,17 +59,15 @@ export const RecentMovements: React.FC<RecentMovementsProps> = ({ movements }) =
 
               <div className="text-right">
                 <p
-                  className={`text-sm font-semibold ${
-                    isStockIn
-                      ? "text-green-600"
-                      : "text-red-600"
+                  className={`text-sm font-bold ${
+                    isStockIn ? "text-emerald-400" : "text-rose-400"
                   }`}
                 >
                   {isStockIn ? "+" : "-"}
                   {movement.quantity}
                 </p>
 
-                <p className="text-xs text-slate-400">
+                <p className="text-[11px] font-mono text-slate-500 uppercase tracking-wider">
                   {movement.type}
                 </p>
               </div>
@@ -78,7 +76,7 @@ export const RecentMovements: React.FC<RecentMovementsProps> = ({ movements }) =
         })}
 
         {displayMovements.length === 0 && (
-          <p className="py-4 text-center text-sm text-slate-500">
+          <p className="py-6 text-center text-sm text-slate-500">
             No recent stock movements recorded.
           </p>
         )}

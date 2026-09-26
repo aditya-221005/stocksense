@@ -55,36 +55,36 @@ export const LedgerPage: React.FC = () => {
   });
 
   return (
-    <div className="p-2 sm:p-6 space-y-6">
-      <div className="mb-6">
-        <h2 className="text-3xl font-bold text-slate-900">
-          Stock Movements
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-3xl font-extrabold text-white tracking-tight">
+          Stock Movements Audit Trail
         </h2>
-        <p className="mt-1 text-slate-500">
-          Track inventory coming in, going out, and internal location transfers.
+        <p className="mt-1 text-sm text-slate-400 font-medium">
+          Immutable historical log of receipts, deliveries, transfers, and inventory adjustments.
         </p>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row">
+      <div className="glass-card rounded-2xl border border-slate-800/80 bg-slate-900/70 p-4 shadow-xl flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
           <Search
             size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
           />
           <input
             type="text"
-            placeholder="Search product..."
+            placeholder="Search by product name..."
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            className="w-full rounded-lg border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-500 focus:bg-white transition"
+            className="w-full rounded-xl border border-slate-800 bg-slate-900/80 py-2.5 pl-10 pr-4 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 transition-all duration-200"
           />
         </div>
 
         <select
           value={typeFilter}
           onChange={(event) => setTypeFilter(event.target.value)}
-          className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:bg-white transition"
+          className="rounded-xl border border-slate-800 bg-slate-900/80 px-4 py-2.5 text-sm text-slate-200 outline-none focus:border-indigo-500 transition-all duration-200"
         >
           <option value="All">All Movements</option>
           <option value="Stock In">Stock In</option>
@@ -93,42 +93,42 @@ export const LedgerPage: React.FC = () => {
       </div>
 
       {/* Movement Table */}
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+      <div className="glass-card overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900/70 shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[700px]">
-            <thead className="border-b border-slate-200 bg-slate-50">
+            <thead className="border-b border-slate-800/80 bg-slate-950/80">
               <tr>
-                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">
                   Product
                 </th>
-                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">
                   Type
                 </th>
-                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">
                   Quantity
                 </th>
-                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Date
+                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  Timestamp
                 </th>
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-800/50">
               {filteredMovements.map((movement) => (
-                <tr key={movement.id} className="hover:bg-slate-50 transition">
-                  <td className="px-5 py-4">
-                    <p className="font-semibold text-slate-800">
+                <tr key={movement.id} className="hover:bg-slate-800/40 transition-colors duration-150">
+                  <td className="px-6 py-4">
+                    <p className="font-semibold text-slate-100">
                       {movement.productName}
                     </p>
                   </td>
 
-                  <td className="px-5 py-4">
-                    <div className="flex items-center gap-2">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2.5">
                       <div
-                        className={`flex h-8 w-8 items-center justify-center rounded-full ${
+                        className={`flex h-8 w-8 items-center justify-center rounded-xl border ${
                           movement.type === "Stock In"
-                            ? "bg-green-50 text-green-600 border border-green-200"
-                            : "bg-red-50 text-red-600 border border-red-200"
+                            ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                            : "bg-rose-500/10 text-rose-400 border-rose-500/30"
                         }`}
                       >
                         {movement.type === "Stock In" ? (
@@ -141,8 +141,8 @@ export const LedgerPage: React.FC = () => {
                       <span
                         className={`text-sm font-semibold ${
                           movement.type === "Stock In"
-                            ? "text-green-600"
-                            : "text-red-600"
+                            ? "text-emerald-400"
+                            : "text-rose-400"
                         }`}
                       >
                         {movement.type}
@@ -150,12 +150,12 @@ export const LedgerPage: React.FC = () => {
                     </div>
                   </td>
 
-                  <td className="px-5 py-4">
+                  <td className="px-6 py-4">
                     <span
                       className={`text-sm font-bold ${
                         movement.type === "Stock In"
-                          ? "text-green-600"
-                          : "text-red-600"
+                          ? "text-emerald-400"
+                          : "text-rose-400"
                       }`}
                     >
                       {movement.type === "Stock In" ? "+" : "-"}
@@ -163,7 +163,7 @@ export const LedgerPage: React.FC = () => {
                     </span>
                   </td>
 
-                  <td className="px-5 py-4 text-sm text-slate-600">
+                  <td className="px-6 py-4 text-xs font-medium text-slate-400">
                     {movement.date}
                   </td>
                 </tr>
@@ -173,7 +173,7 @@ export const LedgerPage: React.FC = () => {
                 <tr>
                   <td
                     colSpan={4}
-                    className="px-5 py-10 text-center text-sm text-slate-500"
+                    className="px-6 py-12 text-center text-sm text-slate-500"
                   >
                     {loading ? "Loading stock movements..." : "No movements found."}
                   </td>

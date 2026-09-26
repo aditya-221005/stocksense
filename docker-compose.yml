@@ -1,5 +1,28 @@
 services:
   # ────────────────────────────────────────────
+  # Database — PostgreSQL
+  # ────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: stocksense-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: stocksense
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d stocksense"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - stocksense-net
+
+  # ────────────────────────────────────────────
   # Backend — Express + Prisma
   # ────────────────────────────────────────────
   backend:
@@ -9,11 +32,18 @@ services:
     container_name: stocksense-backend
     restart: unless-stopped
     env_file:
-      - ./backend/.env        # your real credentials — gitignored, never committed
+      - path: ./backend/.env
+        required: false
+      - path: ./.env
+        required: false
     environment:
       NODE_ENV: production
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/stocksense?schema=public
     ports:
       - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - stocksense-net
     healthcheck:
@@ -31,17 +61,19 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        # Baked into the Vite bundle at build time
         VITE_API_URL: http://localhost:5000/api
     container_name: stocksense-frontend
     restart: unless-stopped
     ports:
       - "3000:80"
     depends_on:
-      - backend       # start after backend, but don't gate on healthcheck
+      - backend
     networks:
       - stocksense-net
 
 networks:
   stocksense-net:
     driver: bridge
+
+volumes:
+  postgres_data:

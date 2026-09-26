@@ -33,44 +33,46 @@ export const LowStock: React.FC<LowStockProps> = ({ items }) => {
         }));
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-      <div className="mb-5">
-        <h3 className="text-lg font-semibold text-slate-900">
-          Low Stock Alerts
-        </h3>
-        <p className="text-sm text-slate-500">
-          Products requiring immediate replenishment
-        </p>
+    <div className="glass-card rounded-2xl p-6 border border-slate-800/80 bg-slate-900/70">
+      <div className="mb-5 flex items-center justify-between">
+        <div>
+          <h3 className="text-lg font-bold text-slate-100">
+            Low Stock Alerts
+          </h3>
+          <p className="text-xs text-slate-400 mt-0.5">
+            Products requiring immediate replenishment
+          </p>
+        </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3.5">
         {displayItems.map((item) => (
           <div
             key={item.id}
-            className="flex items-center justify-between border-b border-slate-100 pb-4 last:border-0 last:pb-0"
+            className="flex items-center justify-between border-b border-slate-800/50 pb-3.5 last:border-0 last:pb-0 hover:bg-slate-800/30 p-2 rounded-xl transition-colors duration-150"
           >
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-orange-50 text-orange-600">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/30">
                 <AlertTriangle size={18} />
               </div>
 
               <div>
-                <p className="text-sm font-medium text-slate-800">
+                <p className="text-sm font-semibold text-slate-200">
                   {item.name}
                 </p>
 
-                <p className="text-xs text-slate-500">
+                <p className="text-xs font-mono text-indigo-400">
                   SKU: {item.sku}
                 </p>
               </div>
             </div>
 
             <div className="text-right">
-              <p className="text-sm font-semibold text-red-600">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-500/10 text-rose-400 border border-rose-500/30">
                 {item.quantity} left
-              </p>
+              </span>
 
-              <p className="text-xs text-slate-400">
+              <p className="text-[11px] text-slate-500 mt-1 font-medium">
                 Min: {item.minStock}
               </p>
             </div>
@@ -78,7 +80,7 @@ export const LowStock: React.FC<LowStockProps> = ({ items }) => {
         ))}
 
         {displayItems.length === 0 && (
-          <p className="py-4 text-center text-sm text-slate-500">
+          <p className="py-6 text-center text-sm text-slate-400">
             All stock levels are currently optimal.
           </p>
         )}
