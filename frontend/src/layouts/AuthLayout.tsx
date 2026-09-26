@@ -24,21 +24,25 @@ export const AuthLayout: React.FC = () => {
       <div className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-indigo-900/10 rounded-full blur-[140px] pointer-events-none"></div>
 
       <div className="w-full max-w-md z-10 flex flex-col items-center">
-        {/* Minimalist Logo Container with Hover Glow Only */}
+        {/* Minimal Transparent Logo Header with Hover-Only Glow */}
         <div className="relative mb-8 group flex flex-col items-center cursor-pointer">
           {/* Hover Glow Aura — Opacity is 0 by default, 100 ONLY on hover */}
-          <div className="absolute -inset-3 rounded-3xl bg-gradient-to-r from-cyan-500 via-indigo-500 to-blue-500 opacity-0 group-hover:opacity-100 blur-2xl transition-opacity duration-300 pointer-events-none"></div>
+          <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-cyan-500 via-indigo-500 to-blue-500 opacity-0 group-hover:opacity-100 blur-2xl transition-opacity duration-300 pointer-events-none"></div>
 
-          {/* Minimal Transparent Logo Card */}
-          <div className="relative flex items-center justify-center px-6 py-4 bg-slate-900/90 backdrop-blur-xl border border-slate-800/90 rounded-2xl shadow-xl transition-all duration-300 group-hover:border-cyan-500/60 group-hover:bg-slate-900">
+          {/* Minimalist Transparent Logo Container */}
+          <div className="relative flex items-center gap-3.5 px-6 py-3.5 bg-slate-900/80 backdrop-blur-xl border border-slate-800/90 rounded-2xl shadow-xl transition-all duration-300 group-hover:border-cyan-500/60 group-hover:bg-slate-900">
             <img 
-              src="/logo-full.png" 
-              alt="StockSense Logo" 
-              className="h-12 sm:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]" 
+              src="/logo-icon.png" 
+              alt="StockSense Icon" 
+              className="h-12 w-12 object-contain transition-transform duration-300 group-hover:scale-110 shrink-0" 
             />
+            <div className="flex items-center text-3xl font-extrabold tracking-tight">
+              <span className="text-white">Stock</span>
+              <span className="text-cyan-400">Sense</span>
+            </div>
           </div>
 
-          <p className="mt-3.5 text-xs font-semibold tracking-wider text-slate-400 uppercase">
+          <p className="mt-3 text-xs font-semibold tracking-wider text-slate-400 uppercase">
             Smart Inventory Platform
           </p>
         </div>
