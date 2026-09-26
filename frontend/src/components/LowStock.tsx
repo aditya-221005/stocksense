@@ -15,22 +15,22 @@ interface LowStockProps {
 }
 
 export const LowStock: React.FC<LowStockProps> = ({ items }) => {
-  const displayItems = items && items.length > 0
-    ? items
-    : products
-        .filter(
-          (product) =>
-            product.status === "Low Stock" ||
-            product.status === "Out of Stock" ||
-            (product.quantity !== undefined && product.minStock !== undefined && product.quantity <= product.minStock)
-        )
-        .map((p) => ({
-          id: p.id,
-          name: p.name,
-          sku: p.sku,
-          quantity: p.quantity ?? 0,
-          minStock: p.minStock ?? 5,
-        }));
+  const displayItems =
+    items ??
+    products
+      .filter(
+        (product) =>
+          product.status === "Low Stock" ||
+          product.status === "Out of Stock" ||
+          (product.quantity !== undefined && product.minStock !== undefined && product.quantity <= product.minStock)
+      )
+      .map((p) => ({
+        id: p.id,
+        name: p.name,
+        sku: p.sku,
+        quantity: p.quantity ?? 0,
+        minStock: p.minStock ?? 5,
+      }));
 
   return (
     <div className="glass-card rounded-2xl p-6 border border-slate-800/80 bg-slate-900/70">

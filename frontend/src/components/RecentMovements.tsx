@@ -8,7 +8,7 @@ interface RecentMovementsProps {
 }
 
 export const RecentMovements: React.FC<RecentMovementsProps> = ({ movements }) => {
-  const displayMovements = movements && movements.length > 0 ? movements : stockMovements;
+  const displayMovements = movements ?? stockMovements;
 
   return (
     <div className="glass-card rounded-2xl p-6 border border-slate-800/80 bg-slate-900/70">

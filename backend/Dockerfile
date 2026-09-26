@@ -50,4 +50,4 @@ EXPOSE 5000
 # NOTE: We use `prisma db push` (not `migrate deploy`) because this project
 # uses schema-push workflow — no migration files exist.
 # To skip schema sync on every restart, comment out the db push line.
-CMD ["sh", "-c", "npx prisma db push --schema=./prisma/schema.prisma --accept-data-loss && node dist/server.js"]
+CMD ["sh", "-c", "npx prisma db push --schema=./prisma/schema.prisma --accept-data-loss && npx prisma db seed && node dist/server.js"]

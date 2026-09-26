@@ -60,6 +60,7 @@ export class DashboardService {
       include: {
         warehouse: true,
         createdBy: { select: { name: true } },
+        lines: { include: { product: true } },
       },
     });
 

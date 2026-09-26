@@ -33,11 +33,11 @@ export const ProductsPage: React.FC = () => {
         ProductService.getCategories(),
         ProductService.getUoms(),
       ]);
-      setProductsList(fetchedProducts.length > 0 ? fetchedProducts : mockProducts);
+      setProductsList(fetchedProducts);
       setCategories(fetchedCategories);
       setUoms(fetchedUoms);
     } catch {
-      setProductsList(mockProducts);
+      setProductsList([]);
     } finally {
       setLoading(false);
     }

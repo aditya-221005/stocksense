@@ -25,23 +25,21 @@ export const LedgerPage: React.FC = () => {
     fetchLedger();
   }, []);
 
-  const formattedMovements: StockMovement[] = ledgerEntries.length > 0
-    ? ledgerEntries.map((entry) => {
-        const isStockIn = entry.type === "RECEIPT" || entry.type === "TRANSFER_IN";
-        return {
-          id: entry.id,
-          productName: entry.product?.name || "Inventory Product",
-          type: isStockIn ? "Stock In" : "Stock Out",
-          quantity: Math.abs(entry.quantity),
-          date: new Date(entry.createdAt).toLocaleDateString("en-IN", {
-            month: "short",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        };
-      })
-    : mockMovements;
+  const formattedMovements: StockMovement[] = ledgerEntries.map((entry) => {
+    const isStockIn = entry.type === "RECEIPT" || entry.type === "TRANSFER_IN";
+    return {
+      id: entry.id,
+      productName: entry.product?.name || "Inventory Product",
+      type: isStockIn ? "Stock In" : "Stock Out",
+      quantity: Math.abs(entry.quantity),
+      date: new Date(entry.createdAt).toLocaleDateString("en-IN", {
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+  });
 
   const filteredMovements = formattedMovements.filter((movement) => {
     const matchesSearch = movement.productName
