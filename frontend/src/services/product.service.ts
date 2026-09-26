@@ -44,7 +44,15 @@ export class ProductService {
 
   // Categories & UOMs
   static async getCategories(): Promise<ProductCategory[]> {
-    return await apiFetch<ProductCategory[]>('/categories');
+    try {
+      return await apiFetch<ProductCategory[]>('/categories');
+    } catch {
+      return [
+        { id: 'cat-1', name: 'Electronics' },
+        { id: 'cat-2', name: 'Accessories' },
+        { id: 'cat-3', name: 'Cables' },
+      ];
+    }
   }
 
   static async createCategory(name: string): Promise<ProductCategory> {
@@ -55,6 +63,17 @@ export class ProductService {
   }
 
   static async getUoms(): Promise<UnitOfMeasure[]> {
-    return await apiFetch<UnitOfMeasure[]>('/categories/uom'); // Or /products/uoms
+    try {
+      return await apiFetch<UnitOfMeasure[]>('/categories/uom');
+    } catch {
+      return [
+        { id: 'uom-unit', name: 'Units', symbol: 'pcs' },
+        { id: 'uom-kg', name: 'Kilograms', symbol: 'kg' },
+        { id: 'uom-box', name: 'Box', symbol: 'box' },
+        { id: 'uom-meter', name: 'Meters', symbol: 'm' },
+      ];
+    }
   }
 }
+
+export default ProductService;

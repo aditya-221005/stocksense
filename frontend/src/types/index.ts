@@ -27,17 +27,22 @@ export interface Product {
   name: string;
   sku: string;
   categoryId?: string | null;
-  category?: ProductCategory | null;
-  uomId: string;
-  uom: UnitOfMeasure;
-  unitCost: number;
-  active: boolean;
+  category?: ProductCategory | string | null;
+  uomId?: string;
+  uom?: UnitOfMeasure;
+  unitCost?: number;
+  price?: number;
+  quantity?: number;
+  minStock?: number;
+  supplier?: Supplier | string | null;
+  status?: string;
+  active?: boolean;
   initialStock?: number;
   stockBalances?: StockBalance[];
   reorderRules?: ReorderRule[];
   ledgerEntries?: StockLedger[];
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Warehouse {
@@ -183,4 +188,19 @@ export interface DashboardSummary {
     minStock: number;
   }>;
   recentActivities: InventoryDocument[];
+}
+
+export interface DashboardStats {
+  totalProducts: number;
+  totalStock: number;
+  lowStock: number;
+  inventoryValue: number;
+}
+
+export interface StockMovement {
+  id: string | number;
+  productName: string;
+  type: 'Stock In' | 'Stock Out' | string;
+  quantity: number;
+  date: string;
 }
